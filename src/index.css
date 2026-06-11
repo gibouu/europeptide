@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f5f3ec;
+  --color-paper-deep: #ece9de;
+  --color-ink: #13140f;
+  --color-ink-soft: #4a4c41;
+  --color-line: #d8d4c4;
+  --color-acid: #c8f135;
+  --color-acid-deep: #9fc916;
+  --color-clay: #b4552d;
+  --color-pine: #1f4d3a;
+
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-sans: "Hanken Grotesk", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  /* faint grid-paper texture */
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: -1px -1px;
+}
+
+::selection {
+  background: var(--color-acid);
+  color: var(--color-ink);
+}
+
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); }
+
+/* mono catalogue label, e.g. "CAT-NO VW-0117" */
+.spec-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.btn-ink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.875rem 1.5rem;
+  border: 1px solid var(--color-ink);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+.btn-ink:hover:not(:disabled) { background: var(--color-acid); color: var(--color-ink); }
+.btn-ink:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.875rem 1.5rem;
+  border: 1px solid var(--color-ink);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-ghost:hover { background: var(--color-ink); color: var(--color-paper); }
+
+.card-rule {
+  background: var(--color-paper);
+  border: 1px solid var(--color-ink);
+  box-shadow: 4px 4px 0 0 var(--color-ink);
+}
+
+/* legal prose */
+.prose-legal h2 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  margin: 2.5rem 0 0.75rem;
+}
+.prose-legal h3 {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 2rem 0 0.5rem;
+}
+.prose-legal p, .prose-legal li {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+}
+.prose-legal ul { padding-left: 1.25rem; list-style: square; }
+.prose-legal strong { color: var(--color-ink); }
+.prose-legal .placeholder {
+  background: #fdf3c9;
+  border-bottom: 1px dashed var(--color-clay);
+  padding: 0 0.25em;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
