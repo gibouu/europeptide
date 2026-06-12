@@ -27,10 +27,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # custom domain eurpep.com serves from the root
+      # no custom domain active -> project path; set back to / when eurpep.com DNS is live
       - run: npm run build
         env:
-          VITE_BASE: /
+          VITE_BASE: /europeptide/
       # SPA fallback — GH Pages serves 404.html for unknown routes
       - run: cp dist/index.html dist/404.html
       - uses: actions/configure-pages@v5
