@@ -1,4 +1,4 @@
--- VIALWORKS starter schema (build spec §8).
+-- EUROPEPTIDE starter schema (build spec §8).
 -- Apply with: supabase db push, or paste into the SQL editor.
 
 create table products (

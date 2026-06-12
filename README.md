@@ -1,4 +1,4 @@
-# VIALWORKS — research reagent storefront
+# EUROPEPTIDE — research reagent storefront
 
 React + Vite + Tailwind v4 + Framer Motion storefront for laboratory research reagents, built from
 the build spec (`docs/` in the original conversation). Supabase schema and a server-side reward
@@ -25,8 +25,25 @@ These come from the build spec and must survive every future change:
 
 ```sh
 npm install
-npm run dev
+cp .env.example .env   # then set MOLLIE_API_KEY (test_... key in dev)
+npm run server         # payment API on :3001
+npm run dev            # site on :5173 (proxies /api to the server)
 ```
+
+## Payments (Mollie)
+
+`server/index.mjs` is a small Node server that creates Mollie payments. The flow:
+cart → `POST /api/create-payment` (slugs + quantities + reward id only) → server recomputes the
+total from the canonical product list, validates the reward, creates the Mollie payment →
+browser redirects to Mollie checkout → Mollie redirects back to `/payment/return?ref=…` which
+polls `GET /api/payment-status`.
+
+- **The API key never ships to the client or the repo** — it lives in `.env` (gitignored). The
+  live key only ever goes into the production host's secret store.
+- Client-sent prices are never trusted; amounts are computed server-side.
+- The webhook (`POST /api/webhooks/mollie`) re-fetches the payment by id and is only registered
+  when `PUBLIC_URL` is set (Mollie can't reach localhost). Order persistence + fulfilment hooks
+  move to Supabase in production (issues #1–#2).
 
 ## What's implemented
 
@@ -38,9 +55,13 @@ npm run dev
 - **Product detail** — reagent-framed specs, price, add to cart, RUO notice.
 - **Bundle lab** — pick exactly 3 compounds → confirm → pack-opening card flip reveals the bundle
   bonus (10%/15%/20% off or free shipping) with a confetti burst.
-- **Cart** — quantities, bundle bonus line, total. Checkout button is a stub (see below).
-- **Legal** — Privacy, Terms, Disclaimer, Cookies, Imprint, Returns as GDPR-shaped templates with
-  highlighted `[placeholders]` and a visible template notice on every page.
+- **Cart** — quantities, bundle bonus line, total, live Mollie checkout (test mode).
+- **Legal** — CGV, Politique de confidentialité, Clause de non-responsabilité, Politique cookies,
+  Mentions légales, Retours & remboursements, Livraison — French-market templates with highlighted
+  `[placeholders]` and a visible template notice on every page. Coverage modeled on what French
+  research-reagent suppliers publish, written fresh for this site (not copied). Deliberate
+  divergence: no blanket "all sales final" clause — EU consumers keep the 14-day withdrawal right
+  with the sealed-goods exemption (Art. 16(e), Directive 2011/83/EU).
 - **Cookie banner** — opt-in, nothing pre-ticked, reject-all equal prominence, granular option.
 
 ## Production wiring (not yet done)
@@ -52,9 +73,10 @@ npm run dev
    odds and outcomes must be decided server-side and recorded on the order.
 3. **Consent log** — once auth exists, also insert the gate declaration into `consent_log`
    (localStorage is not an audit trail).
-4. **Stripe** — add a `create-checkout-session` Edge Function (cart → Stripe Checkout session,
-   amounts computed server-side from the `products` table, discount from the order's rolled
-   reward) and point the Cart checkout button at it. Never trust client-side prices.
+4. **Mollie in production** — deploy `server/index.mjs` (or port it to a Supabase Edge Function),
+   set `PUBLIC_URL` so webhooks register, persist orders to the `orders` table, take the reward
+   from the order row written by `roll-reward`, and supply the live key via the host's secret
+   store only.
 5. **Margin check** — before going live, model the reward table against your cheapest 3-item
    bundle so the worst-case 20% reward still clears the target margin (weights live in the
    `rewards` table so they can be tuned without a deploy).
@@ -63,4 +85,4 @@ npm run dev
 ## Stack
 
 Vite · React 19 · Tailwind CSS v4 (`@tailwindcss/vite`) · Framer Motion · React Router ·
-Supabase (Postgres + RLS + Edge Functions) · Stripe Checkout (planned)
+Supabase (Postgres + RLS + Edge Functions) · Mollie Payments (test mode wired)

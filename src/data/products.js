@@ -16,7 +16,7 @@ export const CATEGORIES = [
 ];
 
 let n = 0;
-const cat = () => `VW-${String(++n).padStart(4, "0")}`;
+const cat = () => `EP-${String(++n).padStart(4, "0")}`;
 
 export const PRODUCTS = [
   // Weight Loss & Metabolism

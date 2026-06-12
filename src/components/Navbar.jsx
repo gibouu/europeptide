@@ -10,7 +10,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-ink bg-paper/95 backdrop-blur">
       <div className="mx-auto max-w-6xl px-4 flex items-center justify-between h-16">
         <Link to="/" className="flex items-baseline gap-2">
-          <span className="font-display text-2xl tracking-tight">VIALWORKS</span>
+          <span className="font-display text-2xl tracking-tight">EUROPEPTIDE</span>
           <span className="spec-label text-ink-soft hidden sm:inline">research reagents</span>
         </Link>
         <nav className="flex items-center gap-1">

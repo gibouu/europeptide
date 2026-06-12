@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 
 const LEGAL_LINKS = [
-  ["Privacy Policy", "/legal/privacy"],
-  ["Terms & Conditions", "/legal/terms"],
-  ["Disclaimer", "/legal/disclaimer"],
-  ["Cookie Policy", "/legal/cookies"],
-  ["Imprint", "/legal/imprint"],
-  ["Returns & Refunds", "/legal/returns"],
+  ["Conditions Générales de Vente", "/legal/terms"],
+  ["Politique de confidentialité", "/legal/privacy"],
+  ["Clause de non-responsabilité", "/legal/disclaimer"],
+  ["Politique cookies", "/legal/cookies"],
+  ["Mentions légales", "/legal/imprint"],
+  ["Retours & remboursements", "/legal/returns"],
+  ["Livraison", "/legal/shipping"],
 ];
 
 export default function Footer() {
@@ -14,7 +15,7 @@ export default function Footer() {
     <footer className="border-t border-ink mt-24 bg-paper-deep">
       <div className="mx-auto max-w-6xl px-4 py-12 grid gap-10 md:grid-cols-3">
         <div>
-          <p className="font-display text-3xl">VIALWORKS</p>
+          <p className="font-display text-3xl">EUROPEPTIDE</p>
           <p className="text-sm text-ink-soft mt-3 leading-relaxed max-w-xs">
             Laboratory research reagents. Every product on this site is supplied for in-vitro research
             use only and is not for human, veterinary, or diagnostic use.
@@ -37,7 +38,7 @@ export default function Footer() {
             on this site describe research context only and are not medical claims. Purchase requires the
             research-use declaration completed at entry.
           </p>
-          <p className="spec-label mt-6 text-ink-soft">© VIALWORKS — [Company legal name]</p>
+          <p className="spec-label mt-6 text-ink-soft">© EUROPEPTIDE — [Company legal name]</p>
         </div>
       </div>
     </footer>

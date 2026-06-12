@@ -1,15 +1,31 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../data/products";
 import { useStore } from "../context/StoreContext";
 
 export default function Cart() {
-  const { cartDetail, setQty, removeFromCart, subtotalCents, bundleReward, discountCents, clearCart } = useStore();
+  const { cart, cartDetail, setQty, removeFromCart, subtotalCents, bundleReward, discountCents, clearCart } = useStore();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
 
-  const checkout = () => {
-    // Stripe wiring point (see README §Checkout): POST the cart to a
-    // create-checkout-session Edge Function and redirect to session.url.
-    // Never compute the charged amount client-side.
-    alert("Checkout is not wired yet — connect Stripe via the create-checkout-session Edge Function (see README).");
+  // Amounts are computed server-side from the canonical product list — the
+  // server only receives slugs/quantities and the reward id to validate.
+  const checkout = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/create-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cart, rewardId: bundleReward?.id ?? null, origin: window.location.origin }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.checkoutUrl) throw new Error(data.error ?? "checkout failed");
+      window.location.href = data.checkoutUrl;
+    } catch (e) {
+      setError(`${e.message} — is the payment server running? (npm run server)`);
+      setBusy(false);
+    }
   };
 
   if (cartDetail.length === 0) {
@@ -58,7 +74,10 @@ export default function Cart() {
         <div className="flex justify-between border-t border-ink pt-2 font-medium">
           <span>Total</span><span className="font-mono">{formatPrice(subtotalCents - discountCents)}</span>
         </div>
-        <button className="btn-ink w-full justify-center mt-4" onClick={checkout}>Checkout →</button>
+        <button className="btn-ink w-full justify-center mt-4" onClick={checkout} disabled={busy}>
+          {busy ? "Opening secure checkout…" : "Checkout →"}
+        </button>
+        {error && <p className="text-xs text-clay leading-relaxed">{error}</p>}
         <button className="spec-label underline text-ink-soft w-full text-center mt-2" onClick={clearCart}>Clear cart</button>
         <p className="text-[11px] text-ink-soft leading-relaxed pt-3">
           By checking out you confirm the research-use declaration made at entry. All items are

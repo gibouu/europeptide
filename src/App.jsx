@@ -10,6 +10,7 @@ import Catalogue from "./pages/Catalogue";
 import ProductDetail from "./pages/ProductDetail";
 import BundleBuilder from "./pages/BundleBuilder";
 import Cart from "./pages/Cart";
+import PaymentReturn from "./pages/PaymentReturn";
 import Legal from "./pages/Legal";
 
 function ScrollToTop() {
@@ -35,6 +36,7 @@ function Shell() {
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/bundle" element={<BundleBuilder />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/payment/return" element={<PaymentReturn />} />
         <Route path="/legal/:doc" element={<Legal />} />
       </Routes>
       <Footer />
