@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import MediaSlot from "../components/MediaSlot";
 import { CATEGORIES, PRODUCTS, categoryLabel } from "../data/products";
 import { useLang } from "../i18n.jsx";
 import * as FR from "../data/products.fr.js";
@@ -13,7 +14,12 @@ export default function Catalogue() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-12">
       <p className="spec-label text-clay">{t("catalogue.label")}</p>
-      <h1 className="font-display text-5xl md:text-6xl mt-2 mb-8">{t("catalogue.title")}</h1>
+      <h1 className="font-display text-5xl md:text-6xl mt-2 mb-6">{t("catalogue.title")}</h1>
+
+      {/* MEDIA SLOT 4 of 4 — catalogue banner clip */}
+      <div className="mb-8">
+        <MediaSlot id="catalogue" rounded />
+      </div>
 
       <div className="flex flex-wrap gap-2 mb-10">
         <button onClick={() => setParams({})}

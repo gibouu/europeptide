@@ -30,6 +30,29 @@ npm run server         # payment API on :3001
 npm run dev            # site on :5173 (proxies /api to the server)
 ```
 
+## Adding your own clips / images (4 media slots)
+
+The site has **four labelled media slots** ready for your own animations or images
+(no syringes — bring compliant clips). They show a dashed placeholder until filled.
+
+| slot id     | where it appears            | shape    |
+|-------------|-----------------------------|----------|
+| `hero`      | Home, under the headline    | 16:10    |
+| `process`   | Home, on the dark lab band  | 4:3      |
+| `bundle`    | Bundle lab header           | 21:9     |
+| `catalogue` | Catalogue header            | 21:9     |
+
+To fill one:
+
+1. Drop your file in **`public/media/`** (e.g. `public/media/hero.mp4`).
+2. Open **`src/data/media.js`** and set that slot's `src` to the path, e.g.
+   `src: "/media/hero.mp4"`. For video you may also set `poster: "/media/hero.jpg"`.
+3. `npm run deploy`.
+
+Supported: `.mp4` / `.webm` (autoplay, muted, looped) and `.jpg` / `.png` / `.webp`.
+Keep files under ~5 MB and match the slot's aspect ratio. That one file is the only
+place you edit — no code changes needed.
+
 ## Deployment (Cloudflare Pages)
 
 Live at **https://europeptide.pages.dev** (custom domain: **eurpep.com**). The payment API runs as
