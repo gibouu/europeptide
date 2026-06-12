@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useStore } from "../context/StoreContext";
+import { useLang, T } from "../i18n.jsx";
 
 // Age + research-use interstitial. Blocks the whole app until accepted.
 // A consent gate is standard for a reagent business, but it is NOT a licence
@@ -10,6 +11,7 @@ import { useStore } from "../context/StoreContext";
 
 export default function Gate() {
   const { setConsent } = useStore();
+  const { t } = useLang();
   const [age, setAge] = useState(false);
   const [research, setResearch] = useState(false);
 
@@ -21,23 +23,19 @@ export default function Gate() {
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="card-rule max-w-lg w-full p-8 md:p-10"
       >
-        <p className="spec-label text-clay">Access declaration</p>
-        <h1 className="font-display text-4xl md:text-5xl mt-2 mb-6">Research use only.</h1>
+        <p className="spec-label text-clay">{t("gate.label")}</p>
+        <h1 className="font-display text-4xl md:text-5xl mt-2 mb-6">{t("gate.title")}</h1>
 
         <label className="flex items-start gap-3 mb-4 cursor-pointer">
           <input type="checkbox" checked={age} onChange={(e) => setAge(e.target.checked)}
                  className="mt-1 size-4 accent-(--color-ink)" />
-          <span className="text-sm leading-relaxed">I am <strong>21 or older</strong>.</span>
+          <span className="text-sm leading-relaxed"><T k="gate.age" /></span>
         </label>
 
         <label className="flex items-start gap-3 mb-6 cursor-pointer">
           <input type="checkbox" checked={research} onChange={(e) => setResearch(e.target.checked)}
                  className="mt-1 size-4 accent-(--color-ink)" />
-          <span className="text-sm leading-relaxed">
-            I work in a <strong>scientific research capacity</strong> (laboratory, institute, R&amp;D) and am
-            purchasing these compounds for <strong>in-vitro use only</strong>. No human, veterinary, or
-            diagnostic use is intended.
-          </span>
+          <span className="text-sm leading-relaxed"><T k="gate.research" /></span>
         </label>
 
         <button
@@ -45,19 +43,17 @@ export default function Gate() {
           disabled={!age || !research}
           onClick={() => setConsent({ age: true, research: true, at: new Date().toISOString() })}
         >
-          Enter catalogue →
+          {t("gate.enter")}
         </button>
 
         <p className="text-xs text-ink-soft leading-relaxed mt-6">
-          Products on this site are supplied strictly as research reagents. They have not been evaluated by
-          the FDA, EMA, or any national health authority, and are not medicines, foods, supplements, or
-          cosmetics. You are responsible for the truth of the declarations above. See our{" "}
-          <Link to="/legal/disclaimer" className="underline">Disclaimer</Link> and{" "}
-          <Link to="/legal/terms" className="underline">Terms</Link>.
+          {t("gate.fine")}{" "}
+          <Link to="/legal/disclaimer" className="underline">{t("gate.disclaimer")}</Link> {t("gate.and")}{" "}
+          <Link to="/legal/terms" className="underline">{t("gate.terms")}</Link>.
         </p>
 
         <a href="https://www.google.com" className="spec-label inline-block mt-5 text-ink-soft underline">
-          Not you? Leave this site
+          {t("gate.leave")}
         </a>
       </motion.div>
     </div>

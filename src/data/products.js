@@ -70,5 +70,21 @@ export const PRODUCTS = [
 
 export const bySlug = (slug) => PRODUCTS.find((p) => p.slug === slug);
 
-export const formatPrice = (cents) =>
-  new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(cents / 100);
+export const formatPrice = (cents, lang = "en") =>
+  new Intl.NumberFormat(lang === "fr" ? "fr-FR" : "en-IE", { style: "currency", currency: "EUR" }).format(cents / 100);
+
+// Returns a product with category/tagline/bullets swapped to the active
+// language. Names, sizes, prices and cat numbers are language-neutral.
+export function localize(product, lang, dict) {
+  if (lang !== "fr" || !dict) return product;
+  const tr = dict.PRODUCTS_FR[product.slug];
+  return {
+    ...product,
+    category: dict.CATEGORIES_FR[product.category] ?? product.category,
+    tagline: tr?.tagline ?? product.tagline,
+    bullets: tr?.bullets ?? product.bullets,
+  };
+}
+
+export const categoryLabel = (cat, lang, dict) =>
+  lang === "fr" && dict ? (dict.CATEGORIES_FR[cat] ?? cat) : cat;

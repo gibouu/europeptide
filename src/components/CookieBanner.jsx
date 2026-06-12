@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useStore } from "../context/StoreContext";
+import { useLang } from "../i18n.jsx";
 
 // GDPR cookie consent: opt-in, nothing pre-ticked, reject-all is as easy as
 // accept-all. No analytics script may load unless cookieChoice.analytics is
@@ -9,6 +10,7 @@ import { useStore } from "../context/StoreContext";
 
 export default function CookieBanner() {
   const { cookieChoice, setCookieChoice } = useStore();
+  const { t } = useLang();
   const [showOptions, setShowOptions] = useState(false);
   const [analytics, setAnalytics] = useState(false);
 
@@ -21,23 +23,22 @@ export default function CookieBanner() {
       transition={{ delay: 0.6 }}
       className="fixed bottom-4 left-4 right-4 md:left-auto md:max-w-md z-40 card-rule p-6"
     >
-      <p className="spec-label text-clay">Cookies</p>
+      <p className="spec-label text-clay">{t("cookie.label")}</p>
       <p className="text-sm leading-relaxed mt-2">
-        We use strictly necessary cookies to run the cart and remember your access declaration.
-        Optional analytics cookies are used only with your consent.{" "}
-        <Link to="/legal/cookies" className="underline">Cookie Policy</Link>
+        {t("cookie.body")}{" "}
+        <Link to="/legal/cookies" className="underline">{t("cookie.policy")}</Link>
       </p>
 
       {showOptions && (
         <div className="mt-4 space-y-2 border-t border-line pt-4">
           <label className="flex items-center gap-3 text-sm">
             <input type="checkbox" checked disabled className="size-4" />
-            Strictly necessary (always on)
+            {t("cookie.necessary")}
           </label>
           <label className="flex items-center gap-3 text-sm cursor-pointer">
             <input type="checkbox" checked={analytics} onChange={(e) => setAnalytics(e.target.checked)}
                    className="size-4 accent-(--color-ink)" />
-            Analytics
+            {t("cookie.analytics")}
           </label>
         </div>
       )}
@@ -45,15 +46,15 @@ export default function CookieBanner() {
       <div className="flex flex-wrap gap-2 mt-4">
         <button className="btn-ink !py-2 !px-4 !text-[11px]"
                 onClick={() => setCookieChoice({ necessary: true, analytics: showOptions ? analytics : true, at: new Date().toISOString() })}>
-          {showOptions ? "Save choices" : "Accept all"}
+          {showOptions ? t("cookie.save") : t("cookie.acceptAll")}
         </button>
         <button className="btn-ghost !py-2 !px-4 !text-[11px]"
                 onClick={() => setCookieChoice({ necessary: true, analytics: false, at: new Date().toISOString() })}>
-          Reject all
+          {t("cookie.rejectAll")}
         </button>
         {!showOptions && (
           <button className="spec-label underline text-ink-soft" onClick={() => setShowOptions(true)}>
-            Options
+            {t("cookie.options")}
           </button>
         )}
       </div>

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useLang } from "../i18n.jsx";
 
 // Pack-opening reveal — the payoff is which DISCOUNT/freebie landed on a
 // bundle the buyer already chose. Per the build spec this must never reveal
@@ -7,6 +8,7 @@ import { motion } from "framer-motion";
 // supabase/functions/roll-reward) — this component only animates it.
 
 export default function RevealCard({ reward, opened, onOpen }) {
+  const { t } = useLang();
   return (
     <div className="relative" style={{ perspective: 1200 }}>
       <motion.div
@@ -31,8 +33,8 @@ export default function RevealCard({ reward, opened, onOpen }) {
           >
             ⚗
           </motion.span>
-          <span className="spec-label !text-paper">Tap to open</span>
-          <span className="font-display text-2xl italic">Your bundle bonus</span>
+          <span className="spec-label !text-paper">{t("bundle.tap")}</span>
+          <span className="font-display text-2xl italic">{t("bundle.bonusCard")}</span>
         </motion.button>
 
         {/* face up */}

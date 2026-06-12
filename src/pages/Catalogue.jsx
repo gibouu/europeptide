@@ -1,26 +1,29 @@
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
-import { CATEGORIES, PRODUCTS } from "../data/products";
+import { CATEGORIES, PRODUCTS, categoryLabel } from "../data/products";
+import { useLang } from "../i18n.jsx";
+import * as FR from "../data/products.fr.js";
 
 export default function Catalogue() {
   const [params, setParams] = useSearchParams();
+  const { lang, t } = useLang();
   const active = params.get("cat");
   const shown = active ? PRODUCTS.filter((p) => p.category === active) : PRODUCTS;
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12">
-      <p className="spec-label text-clay">Catalogue</p>
-      <h1 className="font-display text-5xl md:text-6xl mt-2 mb-8">All compounds</h1>
+      <p className="spec-label text-clay">{t("catalogue.label")}</p>
+      <h1 className="font-display text-5xl md:text-6xl mt-2 mb-8">{t("catalogue.title")}</h1>
 
       <div className="flex flex-wrap gap-2 mb-10">
         <button onClick={() => setParams({})}
                 className={`spec-label px-3 py-2 border border-ink transition-colors ${!active ? "bg-ink text-paper" : "hover:bg-paper-deep"}`}>
-          All ({PRODUCTS.length})
+          {t("catalogue.all")} ({PRODUCTS.length})
         </button>
         {CATEGORIES.map((c) => (
           <button key={c} onClick={() => setParams({ cat: c })}
                   className={`spec-label px-3 py-2 border border-ink transition-colors ${active === c ? "bg-ink text-paper" : "hover:bg-paper-deep"}`}>
-            {c}
+            {categoryLabel(c, lang, FR)}
           </button>
         ))}
       </div>
