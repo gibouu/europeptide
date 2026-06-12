@@ -30,6 +30,18 @@ npm run server         # payment API on :3001
 npm run dev            # site on :5173 (proxies /api to the server)
 ```
 
+## Deployment (Cloudflare Pages)
+
+Live at **https://europeptide.pages.dev** (custom domain: **eurpep.com**). The payment API runs as
+Pages Functions (`functions/api/`), so checkout works on the live site; `MOLLIE_API_KEY` is an
+encrypted Pages secret (`wrangler pages secret put MOLLIE_API_KEY --project-name europeptide`).
+
+```sh
+npm run deploy   # build with root base + wrangler pages deploy
+```
+
+GitHub Pages was retired in favour of Cloudflare (single host, functions support).
+
 ## Payments (Mollie)
 
 `server/index.mjs` is a small Node server that creates Mollie payments. The flow:
