@@ -10,7 +10,7 @@ const TERMINAL = ["paid", "canceled", "expired", "failed"];
 
 export default function PaymentReturn() {
   const [params] = useSearchParams();
-  const ref = params.get("ref");
+  const ref = params.get("ref") ?? localStorage.getItem("ep-last-payment");
   const [status, setStatus] = useState("checking");
   const { clearCart } = useStore();
   const cleared = useRef(false);

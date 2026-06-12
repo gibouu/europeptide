@@ -8,7 +8,6 @@
 // from the order row written by roll-reward) — see issues #1–#3.
 
 import { createServer } from "node:http";
-import { randomUUID } from "node:crypto";
 import { PRODUCTS } from "../src/data/products.js";
 
 const MOLLIE_API_KEY = process.env.MOLLIE_API_KEY;
@@ -27,10 +26,6 @@ const REWARDS = {
   "ship":  { pct: 0 },
   "20pct": { pct: 20 },
 };
-
-// ref -> mollie payment id. In-memory: fine for dev, replaced by the orders
-// table in production.
-const paymentsByRef = new Map();
 
 const mollie = async (path, init = {}) => {
   const res = await fetch(`https://api.mollie.com/v2${path}`, {
@@ -85,26 +80,32 @@ createServer(async (req, res) => {
       const discount = reward && qtyTotal >= 3 ? Math.round((subtotal * reward.pct) / 100) : 0;
       const totalCents = subtotal - discount;
 
-      const ref = randomUUID();
       const payment = await mollie("/payments", {
         method: "POST",
         body: JSON.stringify({
           amount: { currency: "EUR", value: (totalCents / 100).toFixed(2) },
           description: `EUROPEPTIDE ${lines.join(", ")}`.slice(0, 255),
-          redirectUrl: `${origin}/payment/return?ref=${ref}`,
+          redirectUrl: `${origin}/payment/return`,
           ...(PUBLIC_URL ? { webhookUrl: `${PUBLIC_URL}/api/webhooks/mollie` } : {}),
-          metadata: { ref, rewardId: rewardId ?? null, discountCents: discount },
+          metadata: { rewardId: rewardId ?? null, discountCents: discount },
         }),
       });
 
-      paymentsByRef.set(ref, payment.id);
-      return json(res, 200, { checkoutUrl: payment._links.checkout.href, ref });
+      // The payment id is the order ref — patch it into the return URL so
+      // status polling needs no storage (matches functions/api/, the CF port).
+      await mollie(`/payments/${payment.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ redirectUrl: `${origin}/payment/return?ref=${payment.id}` }),
+      }).catch(() => {}); // non-fatal: client also keeps the ref in localStorage
+
+      return json(res, 200, { checkoutUrl: payment._links.checkout.href, ref: payment.id });
     }
 
     if (req.method === "GET" && url.pathname === "/api/payment-status") {
-      const id = paymentsByRef.get(url.searchParams.get("ref"));
-      if (!id) return json(res, 404, { error: "unknown ref" });
-      const payment = await mollie(`/payments/${id}`);
+      const ref = url.searchParams.get("ref");
+      if (!/^tr_[A-Za-z0-9]+$/.test(ref ?? "")) return json(res, 400, { error: "bad ref" });
+      const payment = await mollie(`/payments/${ref}`).catch(() => null);
+      if (!payment) return json(res, 404, { error: "unknown ref" });
       return json(res, 200, { status: payment.status }); // open|pending|paid|canceled|expired|failed
     }
 

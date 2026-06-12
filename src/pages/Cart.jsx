@@ -21,6 +21,7 @@ export default function Cart() {
       });
       const data = await res.json();
       if (!res.ok || !data.checkoutUrl) throw new Error(data.error ?? "checkout failed");
+      localStorage.setItem("ep-last-payment", data.ref); // fallback ref for /payment/return
       window.location.href = data.checkoutUrl;
     } catch (e) {
       setError(`${e.message} — is the payment server running? (npm run server)`);
