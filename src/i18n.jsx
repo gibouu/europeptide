@@ -26,6 +26,7 @@ const DICT = {
       teaserKicker: "The fun part", teaserTitle1: "Pick three. Open the box.", teaserTitle2: "See what bonus landed.",
       teaserBody: "Choose any three compounds for your bundle — you always know exactly what you're buying. The mystery is the bonus: open the box to reveal which discount or freebie you unlocked.",
     },
+    gallery: { kicker: "In motion", title: "Four frames from the lab." },
     catalogue: { label: "Catalogue", title: "All compounds", all: "All" },
     product: {
       add: "Add to cart", added: "Added ✓", viaBundle: "Add via bundle",
@@ -107,6 +108,7 @@ const DICT = {
       teaserKicker: "La partie fun", teaserTitle1: "Choisissez-en trois. Ouvrez la boîte.", teaserTitle2: "Découvrez votre bonus.",
       teaserBody: "Composez votre pack de trois composés — vous savez toujours exactement ce que vous achetez. Le mystère, c'est le bonus : ouvrez la boîte pour révéler la remise ou le cadeau débloqué.",
     },
+    gallery: { kicker: "En mouvement", title: "Quatre images du laboratoire." },
     catalogue: { label: "Catalogue", title: "Tous les composés", all: "Tous" },
     product: {
       add: "Ajouter au panier", added: "Ajouté ✓", viaBundle: "Ajouter via un pack",

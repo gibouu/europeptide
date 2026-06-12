@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
-import MediaSlot from "../components/MediaSlot";
+import MediaGallery from "../components/MediaGallery";
 import ProductCard from "../components/ProductCard";
 import { CATEGORIES, PRODUCTS, categoryLabel } from "../data/products";
 import { useLang } from "../i18n.jsx";
@@ -58,11 +58,6 @@ export default function Home() {
           <Link to="/catalogue" className="btn-ink">{t("home.browse")}</Link>
           <Link to="/bundle" className="btn-ghost">{t("home.build")}</Link>
         </motion.div>
-
-        {/* MEDIA SLOT 1 of 4 — hero clip */}
-        <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.32 }} className="mt-12">
-          <MediaSlot id="hero" rounded />
-        </motion.div>
       </section>
 
       {/* Category strip */}
@@ -110,12 +105,10 @@ export default function Home() {
             />
           </motion.div>
         </div>
-
-        {/* MEDIA SLOT 2 of 4 — lab / process clip (on the dark band) */}
-        <div className="mx-auto max-w-6xl px-4 pb-16 -mt-2">
-          <MediaSlot id="process" rounded dark />
-        </div>
       </section>
+
+      {/* Four 9:16 media slots — drop clips in via src/data/media.js */}
+      <MediaGallery />
 
       {/* Bundle teaser */}
       <section className="mx-auto max-w-6xl px-4 py-16">

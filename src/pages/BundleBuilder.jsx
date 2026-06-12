@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import RevealCard from "../components/RevealCard";
-import MediaSlot from "../components/MediaSlot";
 import { CATEGORIES, PRODUCTS, formatPrice, categoryLabel, localize } from "../data/products";
 import { useStore } from "../context/StoreContext";
 import { useLang } from "../i18n.jsx";
@@ -115,11 +114,6 @@ export default function BundleBuilder() {
       <p className="spec-label text-clay">{t("bundle.label")}</p>
       <h1 className="font-display text-5xl md:text-6xl mt-2">{t("bundle.title")}</h1>
       <p className="text-ink-soft mt-3 max-w-xl leading-relaxed">{t("bundle.intro")}</p>
-
-      {/* MEDIA SLOT 3 of 4 — bundle banner clip */}
-      <div className="mt-8">
-        <MediaSlot id="bundle" rounded />
-      </div>
 
       <div className="mt-6">
         <button onClick={() => setPicks(randomThree())} className="btn-ghost">
