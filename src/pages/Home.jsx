@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import MediaGallery from "../components/MediaGallery";
 import ProductCard from "../components/ProductCard";
 import { CATEGORIES, PRODUCTS, categoryLabel } from "../data/products";
@@ -13,26 +12,6 @@ const fadeUp = {
   viewport: { once: true, margin: "-60px" },
   transition: { duration: 0.5, ease: "easeOut" },
 };
-
-// Neutral illustrative panes for the comparison slider — a stylised culture
-// well at two timepoints. Deliberately NOT a body photo and NOT attributed
-// to any compound (spec §4).
-function WellPane({ density, tint }) {
-  const dots = Array.from({ length: density }, (_, i) => ({
-    cx: 12 + ((i * 37) % 376),
-    cy: 12 + ((i * 53) % 276),
-    r: 3 + (i % 3),
-  }));
-  return (
-    <svg viewBox="0 0 400 300" className="w-full h-full" style={{ background: tint }}>
-      <circle cx="200" cy="150" r="130" fill="none" stroke="#13140f" strokeWidth="2" opacity="0.5" />
-      {dots.map((d, i) => (
-        <circle key={i} {...d} fill="#1f4d3a" opacity={0.25 + (i % 5) * 0.12}
-                style={{ clipPath: "circle(130px at 200px 150px)" }} />
-      ))}
-    </svg>
-  );
-}
 
 export default function Home() {
   const { lang, t } = useLang();
@@ -85,25 +64,6 @@ export default function Home() {
               <ProductCard product={p} />
             </motion.div>
           ))}
-        </div>
-      </section>
-
-      {/* Slider demo */}
-      <section className="border-y border-ink bg-ink text-paper">
-        <div className="mx-auto max-w-6xl px-4 py-16 grid gap-10 lg:grid-cols-2 items-center">
-          <motion.div {...fadeUp}>
-            <p className="spec-label !text-acid">{t("home.demoKicker")}</p>
-            <h2 className="font-display text-4xl md:text-5xl mt-3">{t("home.demoTitle1")}<br />{t("home.demoTitle2")}</h2>
-            <p className="text-paper/70 mt-4 leading-relaxed max-w-md">{t("home.demoBody")}</p>
-          </motion.div>
-          <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.1 }}>
-            <BeforeAfterSlider
-              before={<WellPane density={18} tint="#ece9de" />}
-              after={<WellPane density={70} tint="#e3edd2" />}
-              beforeLabel={t("home.t0")}
-              afterLabel={t("home.t48")}
-            />
-          </motion.div>
         </div>
       </section>
 

@@ -17,10 +17,10 @@
 // ────────────────────────────────────────────────────────────────────────
 
 export const MEDIA = {
-  clip1: { src: null, poster: null, label: "Clip 1", aspect: "9 / 16", note: "720×1280 · ~5 s loop" },
-  clip2: { src: null, poster: null, label: "Clip 2", aspect: "9 / 16", note: "720×1280 · ~5 s loop" },
-  clip3: { src: null, poster: null, label: "Clip 3", aspect: "9 / 16", note: "720×1280 · ~5 s loop" },
-  clip4: { src: null, poster: null, label: "Clip 4", aspect: "9 / 16", note: "720×1280 · ~5 s loop" },
+  clip1: { src: "/media/clip1.mp4", poster: null, label: "Clip 1", aspect: "9 / 16", note: "720×1280 · ~5 s loop" },
+  clip2: { src: "/media/clip2.mp4", poster: null, label: "Clip 2", aspect: "9 / 16", note: "720×1280 · ~5 s loop" },
+  clip3: { src: "/media/clip3.mp4", poster: null, label: "Clip 3", aspect: "9 / 16", note: "720×1280 · ~5 s loop" },
+  clip4: { src: "/media/clip4.mp4", poster: null, label: "Clip 4", aspect: "9 / 16", note: "720×1280 · ~5 s loop" },
 };
 
 export const GALLERY_SLOTS = ["clip1", "clip2", "clip3", "clip4"];
